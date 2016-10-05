@@ -17,3 +17,53 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "fpm/config.h"
+
+#include <errno.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+void read_config(const char *path, struct fpm_config *config) {
+	FILE *file;
+	char buffer[128];
+	char *split_str;
+	int line_no;
+
+	// Open the configuration file in read-only mode
+	file = fopen(path, "r");
+
+	if(file == NULL) {
+		perror("fopen");
+		exit(EXIT_FAILURE);
+	}
+
+	line_no = 1;
+
+	// While we can still read from the file
+	while(!feof(file)) {
+		if(fgets(buffer, sizeof(buffer), file)) {
+			split_str = strtok(buffer, "=");
+
+			if(split_str == NULL) {
+				printf("Failed to parse config file on line %d\n", line_no);
+				exit(EXIT_FAILURE);
+			}
+
+			else if(strcmp(split_str, "width") == 0)
+				config->width = atoi(strtok(NULL, "="));
+
+			else if(strcmp(split_str, "height") == 0)
+				config->height = atoi(strtok(NULL, "="));
+
+			else if(strcmp(split_str, "fullscreen") == 0)
+				config->fullscreen = atoi(strtok(NULL, "="));
+
+			else continue;
+
+			line_no++;
+		}
+	}
+
+	printf("%d, %d, %d\n", config->width, config->height, config->fullscreen);
+
+}

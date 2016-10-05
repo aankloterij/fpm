@@ -16,23 +16,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef FPM_FPM_H
-#define FPM_FPM_H
+#ifndef FPM_ERROR_H
+#define FPM_ERROR_H
 
-#include <GLFW/glfw3.h>
+void glfw_error_callback(int err, const char *msg);
 
-#define FPM_OPENGL_MAJOR 4
-#define FPM_OPENGL_MINOR 5
-
-static struct fpm_config *config;
-
-static GLFWwindow *window;
-
-
-void init(int argc, char* const *argv);
-
-void loop();
-
-void stop();
-
-#endif // FPM_FPM_H
+#endif // FPM_ERROR_H

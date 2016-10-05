@@ -33,4 +33,7 @@ struct fpm_config {
 	short fullscreen;
 };
 
+// Read and parse a config file and assign the values to the structure
+void read_config(const char *path, struct fpm_config *config);
+
 #endif // FPM_CONFIG_H

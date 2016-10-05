@@ -18,10 +18,12 @@
 
 #include "fpm/fpm.h"
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char *const *argv) {
 	init(argc, argv);
 
 	loop();
+
+	stop();
 
 	return 0;
 }
