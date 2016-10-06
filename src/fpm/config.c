@@ -18,65 +18,115 @@
 
 #include "fpm/config.h"
 
-#include <errno.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/stat.h>
 
-// TODO This is a mess, fix it
+/**
+ * @brief    Get or create the config folder of the current user
+ *           The config folder is `~/.config/fpm/`
+ *
+ * @param    buffer  A pointer to a reserved character array
+ */
+void fpm_get_config_folder(char *buffer) {
+	char *home_folder;
+	struct stat st;
 
-static void fpm_write_default_config(void) {
-	FILE *file;
-	char *buffer;
-	struct fpm_config default_config = {800, 600, 0};
+	// The home folder to write config in
+	home_folder = getenv("HOME");
 
-	buffer = malloc(32 * sizeof(char));
-
-	snprintf(buffer, 32, "%s/.config/fpm", getenv("HOME"));
-
-	// Create the fpm config directory
-	if(mkdir(buffer, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) {
-		perror("mkdir");
+	// If somehow the $HOME enviroment variable was not defined
+	if(home_folder == NULL) {
+		fprintf(stderr, "getenv: $HOME was not defined\n");
 		exit(EXIT_FAILURE);
 	}
 
-	snprintf(buffer, 32, "%s/.config/fpm/fpm.conf", getenv("HOME"));
+	// Write `home_folder` to the buffer
+	sprintf(buffer, "%s/.config/fpm", home_folder);
 
-	// Open the configuration file in write mode
+	// The directory doesn't exist (yet)
+	if(stat(buffer, &st) == -1) {
+
+		// Create the directory with the right permissions
+		if(mkdir(buffer, 0755) != 0) {
+			perror("mkdir");
+			exit(EXIT_FAILURE);
+		}
+
+	}
+
+}
+
+/**
+ * @brief    Write the default config to the config file
+ *
+ * @param    conf  A pointer to a `fpm_config` structure
+ */
+void fpm_write_config(const struct fpm_config *conf) {
+	FILE *file;
+	char buffer[64];
+
+	fpm_get_config_folder(buffer);
+
+	sprintf(buffer, "%s/fpm.conf", buffer);
+
 	file = fopen(buffer, "w");
 
+	// If opening a file fails
 	if(file == NULL) {
 		perror("fopen");
 		exit(EXIT_FAILURE);
 	}
 
-	snprintf(buffer, 32, "width=%d\n", default_config.width);
-	fwrite(buffer, sizeof(char), 32, file);
+	// Write the config to the file
+	sprintf(buffer, "width=%d\n", conf->width);
+	fwrite(buffer, sizeof(char), strlen(buffer), file);
 
-	snprintf(buffer, 32, "height=%d\n", default_config.height);
-	fwrite(buffer, sizeof(char), 32, file);
+	sprintf(buffer, "height=%d\n", conf->height);
+	fwrite(buffer, sizeof(char), strlen(buffer), file);
 
-	snprintf(buffer, 32, "fullscreen=%d\n", default_config.fullscreen);
-	fwrite(buffer, sizeof(char), 32, file);
+	sprintf(buffer, "fullscreen=%d\n", conf->fullscreen);
+	fwrite(buffer, sizeof(char), strlen(buffer), file);
 
+	// Close the file
 	fclose(file);
-
-	free(buffer);
 }
 
+/**
+ * @brief    Read config from the config file and write them to the structure
+ *
+ * @param    fpm_config  The `fpm_config` structure to write to
+ */
 void fpm_read_config(struct fpm_config *config) {
 	FILE *file;
-	char buffer[128];
+	char buffer[64];
 	char *split_str;
 	int line_no;
 
-	// Open the configuration file in read-only mode
-	file = fopen("~/.config/fpm/fpm.conf", "r");
+	fpm_get_config_folder(buffer);
+
+	sprintf(buffer, "%s/fpm.conf", buffer);
 
 	// The file doesn't exist
-	if(file == NULL)
-		fpm_write_default_config();
+	if(access(buffer, F_OK) != 0) {
+		struct fpm_config default_config = {
+			FPM_CONFIG_DEFAULT_HEIGHT,
+			FPM_CONFIG_DEFAULT_WIDTH,
+			FPM_CONFIG_DEFAULT_FULLSCREEN
+		};
+
+		fpm_write_config(&default_config);
+	}
+
+	// Open the configuration file in read-only mode
+	file = fopen(buffer, "r");
+
+	if(file == NULL) {
+		perror("fopen");
+		exit(EXIT_FAILURE);
+	}
 
 	line_no = 1;
 

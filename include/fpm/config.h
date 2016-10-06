@@ -19,6 +19,13 @@
 #ifndef FPM_CONFIG_H
 #define FPM_CONFIG_H
 
+#define FPM_CONFIG_DEFAULT_HEIGHT 800
+#define FPM_CONFIG_DEFAULT_WIDTH 600
+#define FPM_CONFIG_DEFAULT_FULLSCREEN 0
+
+/**
+ * @brief    A config structure
+ */
 struct fpm_config {
 
 	// The width of the game window in pixels
@@ -32,9 +39,24 @@ struct fpm_config {
 };
 
 /**
- * @brief      Read config from ~/.config/fpm/fpm.conf
+ * @brief    Get or create the config folder of the current user
+ *           The config folder is `~/.config/fpm/`
  *
- * @param      fpm_config  A pointer to a config structure
+ * @param    buffer  A pointer to a reserved character array
+ */
+void fpm_get_config_folder(char *buffer);
+
+/**
+ * @brief    Write the default config to the config file
+ *
+ * @param    conf  A pointer to a `fpm_config` structure
+ */
+void fpm_write_config(const struct fpm_config *conf);
+
+/**
+ * @brief    Read config from the config file and write them to the structure
+ *
+ * @param    fpm_config  The `fpm_config` structure to write to
  */
 void fpm_read_config(struct fpm_config *config);
 
