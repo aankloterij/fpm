@@ -22,6 +22,6 @@
 #include <stdlib.h>
 
 void glfw_error_callback(int err, const char *msg) {
-	printf("GLFW: %s (%d)\n", msg, err);
+	printf("glfw: %s (%d)\n", msg, err);
 	exit(EXIT_FAILURE);
 }

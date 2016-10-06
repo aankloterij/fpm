@@ -133,15 +133,19 @@ void fpm_read_config(struct fpm_config *config) {
 	// While we can still read from the file
 	while(!feof(file)) {
 		if(fgets(buffer, sizeof(buffer), file)) {
+
+			// Split the string and extract the first part
 			split_str = strtok(buffer, "=");
 
+			// The character ('=') was not found
 			if(split_str == NULL) {
 				printf("Failed to parse config file on line %d\n", line_no);
 				exit(EXIT_FAILURE);
 			}
 
+			// Check if the first part equals the key
 			else if(strcmp(split_str, "width") == 0)
-				config->width = atoi(strtok(NULL, "="));
+				config->width = atoi(strtok(NULL, "=")); // Get the second part and parse it as an integer
 
 			else if(strcmp(split_str, "height") == 0)
 				config->height = atoi(strtok(NULL, "="));
@@ -151,6 +155,7 @@ void fpm_read_config(struct fpm_config *config) {
 
 			else continue;
 
+			// Increment the line number so we know at which line parsing failed
 			line_no++;
 		}
 	}
