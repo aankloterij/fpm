@@ -19,8 +19,6 @@
 #ifndef FPM_CONFIG_H
 #define FPM_CONFIG_H
 
-// Basic configuration options
-// Can be fairly easily expanded
 struct fpm_config {
 
 	// The width of the game window in pixels
@@ -33,7 +31,11 @@ struct fpm_config {
 	short fullscreen;
 };
 
-// Read and parse a config file and assign the values to the structure
-void read_config(const char *path, struct fpm_config *config);
+/**
+ * @brief      Read config from ~/.config/fpm/fpm.conf
+ *
+ * @param      fpm_config  A pointer to a config structure
+ */
+void fpm_read_config(struct fpm_config *config);
 
 #endif // FPM_CONFIG_H

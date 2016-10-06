@@ -38,7 +38,7 @@ void init(int argc, char* const* argv) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, FPM_OPENGL_MAJOR);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, FPM_OPENGL_MINOR);
 
-	read_config("../res/fpm.conf", config);
+	fpm_read_config(config);
 
 	if(config->fullscreen > 0)
 		window = glfwCreateWindow(config->width, config->height, "FPM", glfwGetPrimaryMonitor(), NULL);
