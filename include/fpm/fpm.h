@@ -21,8 +21,8 @@
 
 #include <GLFW/glfw3.h>
 
-#define FPM_OPENGL_MAJOR 4
-#define FPM_OPENGL_MINOR 5
+#define FPM_OPENGL_MAJOR 2
+#define FPM_OPENGL_MINOR 1
 
 struct fpm_config *config;
 
