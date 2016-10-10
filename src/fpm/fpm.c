@@ -34,11 +34,11 @@ void init(int argc, char* const* argv) {
 	if(!glfwInit())
 		exit(EXIT_FAILURE);
 
-	glfwWindowHint(GLFW_SAMPLES, 2);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, FPM_OPENGL_MAJOR);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, FPM_OPENGL_MINOR);
-
 	fpm_read_config(config);
+
+	glfwWindowHint(GLFW_SAMPLES, config->samples);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, FPM_OPENGL_MAJOR);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, FPM_OPENGL_MAJOR);
 
 	if(config->fullscreen > 0)
 		window = glfwCreateWindow(config->width, config->height, "FPM", glfwGetPrimaryMonitor(), NULL);

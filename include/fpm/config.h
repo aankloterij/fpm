@@ -22,6 +22,7 @@
 #define FPM_CONFIG_DEFAULT_HEIGHT 800
 #define FPM_CONFIG_DEFAULT_WIDTH 600
 #define FPM_CONFIG_DEFAULT_FULLSCREEN 0
+#define FPM_CONFIG_DEFAULT_SAMPLES 4
 
 /**
  * @brief    A config structure
@@ -36,6 +37,9 @@ struct fpm_config {
 
 	// > 0 if the game should be run in fullscreen mode
 	short fullscreen;
+
+	// Number of samples
+	int samples;
 };
 
 /**

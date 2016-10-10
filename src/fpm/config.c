@@ -54,9 +54,7 @@ void fpm_get_config_folder(char *buffer) {
 			perror("mkdir");
 			exit(EXIT_FAILURE);
 		}
-
 	}
-
 }
 
 /**
@@ -90,6 +88,9 @@ void fpm_write_config(const struct fpm_config *conf) {
 	sprintf(buffer, "fullscreen=%d\n", conf->fullscreen);
 	fwrite(buffer, sizeof(char), strlen(buffer), file);
 
+	sprintf(buffer, "samples=%d\n", conf->samples);
+	fwrite(buffer, sizeof(char), strlen(buffer), file);
+
 	// Close the file
 	fclose(file);
 }
@@ -114,7 +115,8 @@ void fpm_read_config(struct fpm_config *config) {
 		struct fpm_config default_config = {
 			FPM_CONFIG_DEFAULT_HEIGHT,
 			FPM_CONFIG_DEFAULT_WIDTH,
-			FPM_CONFIG_DEFAULT_FULLSCREEN
+			FPM_CONFIG_DEFAULT_FULLSCREEN,
+			FPM_CONFIG_DEFAULT_SAMPLES
 		};
 
 		fpm_write_config(&default_config);
@@ -153,10 +155,15 @@ void fpm_read_config(struct fpm_config *config) {
 			else if(strcmp(split_str, "fullscreen") == 0)
 				config->fullscreen = atoi(strtok(NULL, "="));
 
+			else if(strcmp(split_str, "samples") == 0)
+				config->samples = atoi(strtok(NULL, "="));
+
 			else continue;
 
 			// Increment the line number so we know at which line parsing failed
 			line_no++;
 		}
 	}
+
+	fclose(file);
 }
