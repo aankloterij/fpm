@@ -58,7 +58,7 @@ void fpm_get_config_folder(char *buffer) {
 }
 
 /**
- * @brief    Write the default config to the config file
+ * @brief    Write a `fpm_config` struct to the config file
  *
  * @param    conf  A pointer to a `fpm_config` structure
  */
@@ -158,7 +158,10 @@ void fpm_read_config(struct fpm_config *config) {
 			else if(strcmp(split_str, "samples") == 0)
 				config->samples = atoi(strtok(NULL, "="));
 
-			else continue;
+			else {
+				printf("Failed to parse config file on line %d\n", line_no);
+				exit(EXIT_FAILURE);
+			}
 
 			// Increment the line number so we know at which line parsing failed
 			line_no++;

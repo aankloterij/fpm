@@ -34,9 +34,8 @@ long fpm_get_file_size(FILE *file);
  * @brief    Read a file into memory
  *
  * @param    filename  Path to the file
- *
- * @return   A pointer to the file in memory
+ * @param    buffer    A buffer to write the file to
  */
-char *fpm_read_file(const char *filename);
+void fpm_read_file(const char *filename, char *buffer);
 
 #endif // FPM_UTILS_H
