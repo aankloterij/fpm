@@ -1,5 +1,6 @@
 
 #include "fpm/input.h"
+#include "fpm/fpm.h"
 
 #include <stdlib.h>
 
@@ -9,7 +10,7 @@ void fpm_glfw_key_callback(GLFWwindow *window, int key, int scancode, int action
 		switch(key) {
 			case GLFW_KEY_ESCAPE:
 			case GLFW_KEY_DELETE:
-				exit(0);
+				stop();
 				break;
 		}
 	}

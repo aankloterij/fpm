@@ -88,5 +88,7 @@ void render(double time) {
 }
 
 void stop() {
+	glfwDestroyWindow(window);
 	glfwTerminate();
+	exit(0);
 }
