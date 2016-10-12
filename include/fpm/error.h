@@ -19,6 +19,6 @@
 #ifndef FPM_ERROR_H
 #define FPM_ERROR_H
 
-void glfw_error_callback(int err, const char *msg);
+void fpm_glfw_error_callback(int err, const char *msg);
 
 #endif // FPM_ERROR_H

@@ -19,16 +19,21 @@
 #include "fpm/fpm.h"
 #include "fpm/config.h"
 #include "fpm/error.h"
+#include "fpm/input.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <GL/gl.h>
+
+static double time, old_time;
+static int no_frames;
 
 void init(int argc, char* const* argv) {
 
 	config = malloc(sizeof(struct fpm_config));
 
 	// Set the GLFW callback
-	glfwSetErrorCallback(glfw_error_callback);
+	glfwSetErrorCallback(fpm_glfw_error_callback);
 
 	// Initialize GLFW
 	if(!glfwInit())
@@ -47,23 +52,39 @@ void init(int argc, char* const* argv) {
 
 	glfwMakeContextCurrent(window);
 
+	glfwSetKeyCallback(window, fpm_glfw_key_callback);
+	glfwSetCursorPosCallback(window, fpm_glfw_mouse_pos_callback);
+	glfwSetMouseButtonCallback(window, fpm_glfw_mouse_button_callback);
+
+	time = glfwGetTime();
 }
 
 void loop() {
 	while(!glfwWindowShouldClose(window)) {
 
-		render(window);
+		render(time);
+
+		glfwSwapBuffers(window);
 
 		glfwPollEvents();
 	}
 }
 
-void render(GLFWwindow *window) {
+void render(double time) {
+	no_frames++;
+
+	time = glfwGetTime();
+
+	if(time - old_time >= 1.0) {
+		printf("%.2f ms/frame, %.1f fps\n", (1000 / ((double) no_frames)), (((double) no_frames)));
+		no_frames = 0;
+		old_time += 1.0;
+	}
+
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glClearColor(0.98, 0.625, 0.12, 1);
 
-	glfwSwapBuffers(window);
 }
 
 void stop() {

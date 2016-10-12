@@ -16,12 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "fpm/error.h"
+#ifndef FPM_INPUT_H
+#define FPM_INPUT_H
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <GLFW/glfw3.h>
 
-void fpm_glfw_error_callback(int err, const char *msg) {
-	printf("%s (%d)\n", msg, err);
-	exit(EXIT_FAILURE);
-}
+void fpm_glfw_key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
+
+void fpm_glfw_mouse_pos_callback(GLFWwindow *window, double x, double y);
+
+void fpm_glfw_mouse_button_callback(GLFWwindow *window, int button, int action, int mods);
+
+#endif // FPM_INPUT_H

@@ -32,7 +32,7 @@ void init(int argc, char* const *argv);
 
 void loop();
 
-void render(GLFWwindow *window);
+void render(double time);
 
 void stop();
 
