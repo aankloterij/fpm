@@ -52,14 +52,18 @@ void init(int argc, char* const* argv) {
 void loop() {
 	while(!glfwWindowShouldClose(window)) {
 
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glClearColor(1, 1, 1, 1);
-
-		glfwSwapBuffers(window);
+		render(window);
 
 		glfwPollEvents();
 	}
+}
+
+void render(GLFWwindow *window) {
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glClearColor(0.98, 0.625, 0.12, 1);
+
+	glfwSwapBuffers(window);
 }
 
 void stop() {
