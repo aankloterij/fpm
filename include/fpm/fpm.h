@@ -36,4 +36,6 @@ void render(double time);
 
 void stop();
 
+GLuint get_program_id();
+
 #endif // FPM_FPM_H

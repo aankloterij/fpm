@@ -16,19 +16,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <GL/glew.h>
+#include <GL/gl.h>
+
 #include "fpm/fpm.h"
 #include "fpm/config.h"
 #include "fpm/error.h"
 #include "fpm/input.h"
+#include "fpm/render.h"
+#include "fpm/shaders.h"
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <GL/gl.h>
 
 static double time, old_time;
 static int no_frames;
+static GLuint program_id;
 
 void init(int argc, char* const* argv) {
+	GLenum glew_err;
 
 	config = malloc(sizeof(struct fpm_config));
 
@@ -56,11 +62,37 @@ void init(int argc, char* const* argv) {
 	glfwSetCursorPosCallback(window, fpm_glfw_mouse_pos_callback);
 	glfwSetMouseButtonCallback(window, fpm_glfw_mouse_button_callback);
 
+	glewExperimental = GL_TRUE;
+
+	glew_err = glewInit();
+
+	if(glew_err != GLEW_OK) {
+		fprintf(stderr, "GLEW: %s\n", glewGetErrorString(glew_err));
+	}
+
 	time = glfwGetTime();
+
+	program_id = glCreateProgram();
+
+	fpm_load_vertex_shader("../res/shaders/vertex_shader.vert");
+	fpm_load_fragment_shader("../res/shaders/fragment_shader.frag");
 }
 
 void loop() {
+	init_render();
+
 	while(!glfwWindowShouldClose(window)) {
+
+		no_frames++;
+
+		time = glfwGetTime();
+
+		// FPS Counter
+		if(time - old_time >= 1.0) {
+			printf("%.2f ms/frame, %.1f fps\n", (1000 / ((double) no_frames)), (((double) no_frames)));
+			no_frames = 0;
+			old_time += 1.0;
+		}
 
 		render(time);
 
@@ -70,25 +102,12 @@ void loop() {
 	}
 }
 
-void render(double time) {
-	no_frames++;
-
-	time = glfwGetTime();
-
-	if(time - old_time >= 1.0) {
-		printf("%.2f ms/frame, %.1f fps\n", (1000 / ((double) no_frames)), (((double) no_frames)));
-		no_frames = 0;
-		old_time += 1.0;
-	}
-
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glClearColor(0.98, 0.625, 0.12, 1);
-
-}
-
 void stop() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	exit(0);
+}
+
+GLuint get_program_id() {
+	return program_id;
 }

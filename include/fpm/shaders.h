@@ -16,26 +16,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef FPM_UTILS_H
-#define FPM_UTILS_H
+#ifndef FPM_INPUT_H
+#define FPM_INPUT_H
 
-#include <stdio.h>
+#include <GL/gl.h>
 
-/**
- * @brief    Get the size of a file
- *
- * @param    file  The file descriptor
- *
- * @return   The size of the file
- */
-long fpm_get_file_size(FILE *file);
+#define FPM_SHADER_TYPE_VERTEX GL_VERTEX_SHADER
+#define FPM_SHADER_TYPE_FRAGMENT GL_FRAGMENT_SHADER
 
-/**
- * @brief    Read a file into memory
- *
- * @param    filename  Path to the file
- * @param    buffer    A buffer to write the file to
- */
-char *fpm_read_file(const char *filename);
+void fpm_load_shader(GLenum type, const char *path);
 
-#endif // FPM_UTILS_H
+void fpm_load_vertex_shader(const char *path);
+void fpm_load_fragment_shader(const char *path);
+
+#endif // FPM_INPUT_H

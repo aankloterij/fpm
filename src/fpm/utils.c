@@ -59,13 +59,11 @@ long fpm_get_file_size(FILE *file) {
  * @param    filename  Path to the file
  * @param    buffer    A buffer to write the file to
  */
-void fpm_read_file(const char *filename, char *buffer) {
+char *fpm_read_file(const char *filename) {
 	FILE *file;
 	long file_size;
+	char *buffer;
 	size_t read_length;
-
-	if(buffer == NULL)
-		return;
 
 	// Open the file in read-only mode
 	file = fopen(filename, "r");
@@ -82,6 +80,11 @@ void fpm_read_file(const char *filename, char *buffer) {
 	// Allocate memory to store the file
 	buffer = malloc((file_size + 1) * sizeof(char));
 
+	if(buffer == NULL) {
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+
 	// Read the file into memory
 	read_length = fread(buffer, sizeof(char), file_size, file);
 
@@ -95,4 +98,6 @@ void fpm_read_file(const char *filename, char *buffer) {
 
 	// Close the file descriptor
 	fclose(file);
+
+	return buffer;
 }

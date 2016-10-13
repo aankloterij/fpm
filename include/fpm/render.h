@@ -16,26 +16,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef FPM_UTILS_H
-#define FPM_UTILS_H
+#ifndef FPM_RENDER_H
+#define FPM_RENDER_H
 
-#include <stdio.h>
+void init_render();
 
-/**
- * @brief    Get the size of a file
- *
- * @param    file  The file descriptor
- *
- * @return   The size of the file
- */
-long fpm_get_file_size(FILE *file);
+void render(double time);
 
-/**
- * @brief    Read a file into memory
- *
- * @param    filename  Path to the file
- * @param    buffer    A buffer to write the file to
- */
-char *fpm_read_file(const char *filename);
-
-#endif // FPM_UTILS_H
+#endif // FPM_RENDER_H
