@@ -78,7 +78,7 @@ char *fpm_read_file(const char *filename) {
 	file_size = fpm_get_file_size(file);
 
 	// Allocate memory to store the file
-	buffer = malloc((file_size + 1) * sizeof(char));
+	buffer = malloc((file_size) * sizeof(char));
 
 	if(buffer == NULL) {
 		perror("malloc");
@@ -94,7 +94,7 @@ char *fpm_read_file(const char *filename) {
 	}
 
 	// Add a null terminator just to be sure
-	buffer[read_length + 1] = '\0';
+	buffer[read_length] = '\0';
 
 	// Close the file descriptor
 	fclose(file);

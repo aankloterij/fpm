@@ -76,6 +76,8 @@ void init(int argc, char* const* argv) {
 
 	fpm_load_vertex_shader("../res/shaders/vertex_shader.vert");
 	fpm_load_fragment_shader("../res/shaders/fragment_shader.frag");
+
+	fpm_link_shaders();
 }
 
 void loop() {

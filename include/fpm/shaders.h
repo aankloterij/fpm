@@ -29,4 +29,6 @@ void fpm_load_shader(GLenum type, const char *path);
 void fpm_load_vertex_shader(const char *path);
 void fpm_load_fragment_shader(const char *path);
 
+void fpm_link_shaders(void);
+
 #endif // FPM_INPUT_H
