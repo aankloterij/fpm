@@ -35,7 +35,7 @@ void fpm_load_shader(GLenum type, const char *path) {
 	glGetShaderiv(shader_id, GL_COMPILE_STATUS, &result);
 	glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &info_log_len);
 
-	if(info_log_len > 0) {
+	if(result == GL_TRUE) {
 		char *shader_err = malloc((info_log_len + 1) * sizeof(char));
 
 		if(shader_err == NULL) {
@@ -84,7 +84,7 @@ void fpm_link_shaders(void) {
 	glGetProgramiv(prog_id, GL_LINK_STATUS, &result);
 	glGetProgramiv(prog_id, GL_INFO_LOG_LENGTH, &info_log_len);
 
-	if(info_log_len > 0) {
+	if(result == GL_TRUE) {
 		printf("%d\n", info_log_len);
 
 		char *shader_err = malloc(info_log_len * sizeof(char));

@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef FPM_INPUT_H
-#define FPM_INPUT_H
+#ifndef FPM_SHADER_H
+#define FPM_SHADER_H
 
 #include <GL/gl.h>
 
@@ -31,4 +31,4 @@ void fpm_load_fragment_shader(const char *path);
 
 void fpm_link_shaders(void);
 
-#endif // FPM_INPUT_H
+#endif // FPM_SHADER_H
