@@ -9,11 +9,13 @@ static GLuint vertex_array_object, vertex_buffer;
 static const GLfloat vert_buffer_data[] = {
 	-1.0f, -1.0f, 0.0f,
 	1.0f, -1.0f, 0.0f,
-	0.0f,  1.0f, 0.0f,
+	0.0f,  1.0f, 0.0f
 };
 
 void init_render() {
+
 	glGenVertexArrays(1, &vertex_array_object);
+
 	glBindVertexArray(vertex_array_object);
 
 	glGenBuffers(1, &vertex_buffer);
@@ -25,16 +27,15 @@ void init_render() {
 
 void render(double time) {
 
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	glEnableVertexAttribArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *) 0);
+
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+
 	glDisableVertexAttribArray(0);
-
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glClearColor(0.98, 0.625, 0.12, 1);
-
 }
